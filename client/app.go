@@ -13,6 +13,7 @@ func main(){
 	router.GET("/vegetable/:id", GetAVegetable)
 	router.GET("/vegetable", GetAllVegetables)
 	router.POST("/vegetable", AddAVegetable)
+	router.POST("/vegetable/:id", UpdateAVegetable)
 
 	router.Run(":8080")
 }

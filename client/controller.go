@@ -60,6 +60,27 @@ func AddAVegetable(c *gin.Context) {
 	
 }
 
+// UpdateAVegetable returns a vegetable by id
+func UpdateAVegetable(c *gin.Context) {
+	id,_ := strconv.Atoi(c.Param("id"))
+
+	var vegetable common.Vegetable
+
+	if err := c.ShouldBindJSON(&vegetable); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+	vegetable.ID = id
+
+	if err := client.Call("Store.Update", vegetable, &vegetable); err != nil {
+		fmt.Println("Error:Store.Update()", err)
+	} else {
+		c.JSON(http.StatusOK,vegetable)
+	}
+	
+}
+
 func init(){
 	client, _ = rpc.DialHTTP("tcp", "127.0.0.1:9000") 
 }

@@ -74,6 +74,26 @@ func (c *Store) AddVeg(vegetable Vegetable,reply *Vegetable )error{
 	return nil
 }
 
+// Update methods update a vegetable with specific id (procedure).
+func (c *Store) Update(vegetable Vegetable,reply *Vegetable )error{
+
+	// get vegetable with id `p` from the database
+	_, ok := c.database[vegetable.ID]
+
+	// check if vegetable exists in the database
+	if !ok {
+		return fmt.Errorf("vegetable with id '%d' does not exist", vegetable.ID)
+	}
+
+	c.database[vegetable.ID] =  vegetable
+
+	*reply = vegetable
+
+	// return `nil` error
+	return nil
+}
+
+
 func init() {
 	store = &Store{
 		database: make(map[int]Vegetable),
