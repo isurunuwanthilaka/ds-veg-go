@@ -11,6 +11,7 @@ var (
 func main(){
 	// URL mapping
 	router.GET("/vegetable/:id", GetAVegetable)
+	router.GET("/vegetable", GetAllVegetables)
 
 	router.Run(":8080")
 }

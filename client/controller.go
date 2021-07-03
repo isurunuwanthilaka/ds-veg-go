@@ -14,7 +14,7 @@ var (
 	client *rpc.Client
 )
 
-// Ping ping service
+// GetAVegetable returns a vegetable by id
 func GetAVegetable(c *gin.Context) {
 	id,_ := strconv.Atoi(c.Param("id"))
 
@@ -24,6 +24,19 @@ func GetAVegetable(c *gin.Context) {
 		fmt.Println("Error:Store.Get()", err)
 	} else {
 		c.JSON(http.StatusOK,vegetable)
+	}
+	
+}
+
+// GetAllVegetables returns all vegetables
+func GetAllVegetables(c *gin.Context) {
+	
+	var arr []common.Vegetable
+
+	if err := client.Call("Store.GetAll","", &arr); err != nil {
+		fmt.Println("Error:Store.GetAll()", err)
+	} else {
+		c.JSON(http.StatusOK,arr)
 	}
 	
 }

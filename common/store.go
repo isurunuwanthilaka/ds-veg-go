@@ -29,13 +29,13 @@ func (c *Store) Add(vegetable Vegetable) error {
 	return nil
 }
 
-// Get methods returns a student with specific id (procedure).
+// Get methods returns a vegetable with specific id (procedure).
 func (c *Store) Get(id int,reply *Vegetable )error{
 
-	// get student with id `p` from the database
+	// get vegetable with id `p` from the database
 	result, ok := c.database[id]
 
-	// check if student exists in the database
+	// check if vegetable exists in the database
 	if !ok {
 		return fmt.Errorf("vegetable with id '%d' does not exist", id)
 	}
@@ -43,6 +43,20 @@ func (c *Store) Get(id int,reply *Vegetable )error{
 	*reply = result
 
 	// return `nil` error
+	return nil
+}
+
+// GetAll methods returns all vegetable (procedure).
+func (c *Store) GetAll(args string ,reply *[]Vegetable ) error{
+
+	var arr []Vegetable
+
+	for _,element := range c.database {
+		arr = append(arr, element)
+	}
+
+	*reply = arr
+	
 	return nil
 }
 
