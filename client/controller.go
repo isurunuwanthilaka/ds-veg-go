@@ -41,6 +41,25 @@ func GetAllVegetables(c *gin.Context) {
 	
 }
 
+// AddAVegetable add a vegetable
+func AddAVegetable(c *gin.Context) {
+
+	var vegetable common.Vegetable
+
+	if err := c.ShouldBindJSON(&vegetable); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+
+	if err := client.Call("Store.AddVeg", vegetable, &vegetable); err != nil {
+		fmt.Println("Error:Store.AddVeg()", err)
+	} else {
+		c.JSON(http.StatusOK,vegetable)
+	}
+	
+}
+
 func init(){
 	client, _ = rpc.DialHTTP("tcp", "127.0.0.1:9000") 
 }

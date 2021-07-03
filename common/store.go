@@ -60,6 +60,20 @@ func (c *Store) GetAll(args string ,reply *[]Vegetable ) error{
 	return nil
 }
 
+// AddVeg methods add a vegetable (procedure).
+func (c *Store) AddVeg(vegetable Vegetable,reply *Vegetable )error{
+
+	vegetable.Price = 0.0
+	vegetable.Amount = 0.0
+
+	store.Add(vegetable)
+
+	*reply = vegetable
+
+	// return `nil` error
+	return nil
+}
+
 func init() {
 	store = &Store{
 		database: make(map[int]Vegetable),
