@@ -93,6 +93,25 @@ func (c *Store) Update(vegetable Vegetable,reply *Vegetable )error{
 	return nil
 }
 
+// Delete methods deletes a vegetable with specific id (procedure).
+func (c *Store) Delete(id int,reply *string )error{
+
+	// get vegetable with id `p` from the database
+	_, ok := c.database[id]
+
+	// check if vegetable exists in the database
+	if !ok {
+		return fmt.Errorf("vegetable with id '%d' does not exist", id)
+	}else{
+		delete(c.database, id);
+		*reply = "deleted successfully."
+	}
+
+	// return `nil` error
+	return nil
+}
+
+
 
 func init() {
 	store = &Store{

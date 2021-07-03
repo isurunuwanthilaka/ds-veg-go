@@ -14,6 +14,7 @@ func main(){
 	router.GET("/vegetable", GetAllVegetables)
 	router.POST("/vegetable", AddAVegetable)
 	router.POST("/vegetable/:id", UpdateAVegetable)
+	router.DELETE("/vegetable/:id", DeleteAVegetable)
 
 	router.Run(":8080")
 }

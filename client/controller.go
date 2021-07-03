@@ -81,6 +81,20 @@ func UpdateAVegetable(c *gin.Context) {
 	
 }
 
+// DeleteAVegetable returns a vegetable by id
+func DeleteAVegetable(c *gin.Context) {
+	id,_ := strconv.Atoi(c.Param("id"))
+
+	var res string
+
+	if err := client.Call("Store.Delete", id, &res); err != nil {
+		fmt.Println("Error:Store.Delete()", err)
+	} else {
+		c.String(http.StatusOK,res)
+	}
+	
+}
+
 func init(){
 	client, _ = rpc.DialHTTP("tcp", "127.0.0.1:9000") 
 }
