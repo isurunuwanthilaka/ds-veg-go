@@ -1,7 +1,10 @@
 package common
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"os"
 )
 
 var (
@@ -24,6 +27,7 @@ func (c *Store) Add(vegetable Vegetable) error {
 
 	// add vegetable `p` in the database
 	c.database[vegetable.ID] = vegetable
+	c.Commit()
 
 	// return `nil` error
 	return nil
@@ -86,6 +90,7 @@ func (c *Store) Update(vegetable Vegetable,reply *Vegetable )error{
 	}
 
 	c.database[vegetable.ID] =  vegetable
+	c.Commit()
 
 	*reply = vegetable
 
@@ -103,7 +108,8 @@ func (c *Store) Delete(id int,reply *string )error{
 	if !ok {
 		return fmt.Errorf("vegetable with id '%d' does not exist", id)
 	}else{
-		delete(c.database, id);
+		delete(c.database, id)
+		c.Commit()
 		*reply = "deleted successfully."
 	}
 
@@ -111,30 +117,22 @@ func (c *Store) Delete(id int,reply *string )error{
 	return nil
 }
 
-
-
 func init() {
 	store = &Store{
 		database: make(map[int]Vegetable),
 	}
-	store.Add(Vegetable{
-		ID:        1,
-		Name : "carrot",
-		Price: 10.00,
-		Amount:  5.25,
-	})
-	store.Add(Vegetable{
-		ID:        2,
-		Name : "beetroot",
-		Price: 20.00,
-		Amount:  10.25,
-	})
-	store.Add(Vegetable{
-		ID:        3,
-		Name : "cabbage",
-		Price: 15.00,
-		Amount:  10.55,
-	})
+}
+
+// Read function reads from a file
+func (c *Store) Read(){
+	file, _ := ioutil.ReadFile("db.json")
+	json.Unmarshal(file, &store.database)
+}
+
+// Commit function commits to a file
+func (c *Store) Commit(){
+	jsonString, _ := json.Marshal(store.database)
+	ioutil.WriteFile("db.json", jsonString, os.ModePerm)
 }
 
 // GetStore function returns a new instance of Store (pointer).
